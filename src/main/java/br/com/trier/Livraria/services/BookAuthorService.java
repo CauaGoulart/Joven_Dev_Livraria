@@ -13,8 +13,9 @@ public interface BookAuthorService {
 	BookAuthor insert (BookAuthor pista );
 	List<BookAuthor> listAll();
 	BookAuthor findById(Integer id);
-	List<BookAuthor> findByBook(Book book);
-	List<BookAuthor> findByAuthor(Author author);
+	List<BookAuthor> findByBookIgnoreCase(Book book);
+	List<BookAuthor> findByAuthorIgnoreCase(Author author);
+	List<BookAuthor> findByBookAndAuthorIgnoreCase(Book book,Author author);
 	BookAuthor update(BookAuthor bookAuthor);
     void delete(Integer id);
     

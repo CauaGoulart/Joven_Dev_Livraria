@@ -13,7 +13,8 @@ import br.com.trier.Livraria.domain.BookAuthor;
 @Repository
 public interface BookAuthorRepository extends JpaRepository<BookAuthor, Integer>{
 
-	List<BookAuthor> findByBook(Book book);
-	List<BookAuthor> findByAuthor(Author author);
+	List<BookAuthor> findByBookIgnoreCase(Book book);
+	List<BookAuthor> findByAuthorIgnoreCase(Author author);
+	List<BookAuthor> findByBookAndAuthorIgnoreCase(Book book,Author author);
 	   
 }

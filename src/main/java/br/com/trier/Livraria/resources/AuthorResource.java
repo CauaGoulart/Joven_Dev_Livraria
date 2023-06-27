@@ -46,7 +46,7 @@ public class AuthorResource {
 		}
 	
     @GetMapping
-	public ResponseEntity<List<AuthorDTO>> listaTodos(){
+	public ResponseEntity<List<AuthorDTO>> listAll(){
         return ResponseEntity.ok(service.listAll().stream().map((author) -> author.toDto()).toList());
 }
     

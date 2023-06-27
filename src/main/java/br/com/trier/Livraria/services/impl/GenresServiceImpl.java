@@ -29,7 +29,7 @@ public class GenresServiceImpl implements GenresService{
 
 	@Override
 	public Genres findById(Integer id) {
-		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("Livro id %s não existe".formatted(id)));
+		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("BookAuthor with id %s does not exist.".formatted(id)));
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class GenresServiceImpl implements GenresService{
 	public Optional<Genres> findByGenresIgnoreCase(String genres) {
 		Optional<Genres> lista = repository.findByGenresIgnoreCase(genres);
 		if (lista.isEmpty()) {
-			throw new ObjectNotFound("Nenhum nome de livro inicia com %s".formatted(genres));
+			throw new ObjectNotFound("No genres found: %s.".formatted(genres));
 		}
 		return repository.findByGenresIgnoreCase(genres);
 

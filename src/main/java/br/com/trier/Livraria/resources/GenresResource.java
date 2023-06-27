@@ -17,36 +17,36 @@ import br.com.trier.Livraria.domain.Genres;
 import br.com.trier.Livraria.services.GenresService;
 
 @RestController
-@RequestMapping(value = "/book")
+@RequestMapping(value = "/genres")
 public class GenresResource {
 	
 	@Autowired
 	private GenresService service;
 
 	@PostMapping
-	public ResponseEntity<Genres> insert(@RequestBody Genres livro) {
-		return ResponseEntity.ok(service.insert(livro));	
+	public ResponseEntity<Genres> insert(@RequestBody Genres genres) {
+		return ResponseEntity.ok(service.insert(genres));	
 		}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Genres> buscaPorCodigo(@PathVariable Integer id) {
-		Genres livro = service.findById(id);
-		 return ResponseEntity.ok(livro);	
+	public ResponseEntity<Genres> findById(@PathVariable Integer id) {
+		Genres genres = service.findById(id);
+		 return ResponseEntity.ok(genres);	
 	}
 	
 	 @GetMapping("/name/{name}")
-		public ResponseEntity<List<Genres>> buscarPorNome(@PathVariable String genres){
+		public ResponseEntity<List<Genres>> findByGenresIgnoreCase(@PathVariable String genres){
 	        return ResponseEntity.ok(service.findByGenresIgnoreCase(genres).stream().map((user) -> user).toList());
 		}
 	
     @GetMapping
-	public ResponseEntity<List<Genres>> listaTodos(){
+	public ResponseEntity<List<Genres>> listAll(){
         return ResponseEntity.ok(service.listAll());
 }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Genres> update(@PathVariable Integer id, @RequestBody Genres livro){
-		return ResponseEntity.ok(service.update(livro));
+    public ResponseEntity<Genres> update(@PathVariable Integer id, @RequestBody Genres genres){
+		return ResponseEntity.ok(service.update(genres));
 	}
     
     @DeleteMapping("/{id}")

@@ -1,8 +1,6 @@
 package br.com.trier.Livraria.domain;
 
-import java.time.LocalDateTime;
-
-import br.com.trier.Livraria.domain.dto.SaleDTO;
+import br.com.trier.Livraria.domain.dto.BookGenresDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,27 +17,27 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Entity(name = "sale")
-public class Sale {
+@Entity(name = "livro_genero")
+public class BookGenres {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_sale")
+	@Column(name = "id_genero")
 	@Setter
 	private Integer id;
 	
-	@Column(name = "date_sale")
-	private LocalDateTime date;
+	@ManyToOne
+	private Book book;
 	
 	@ManyToOne
-	private User user;
-
-	public Sale(SaleDTO dto) {
-		this(dto.getId(),dto.getDate(),dto.getUser());
+	private Genres genres;
+	
+	public BookGenres(BookGenresDTO dto) {
+		this(dto.getId(),dto.getBook(),dto.getGenres());
 	}
 	
-	public SaleDTO toDto() {
-		return new SaleDTO(id, date, user);
+	public BookGenresDTO toDto() {
+		return new BookGenresDTO(id,book,genres);
 	}
-}
 
+}

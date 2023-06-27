@@ -46,7 +46,7 @@ public class BookResource {
 		}
 	
     @GetMapping
-	public ResponseEntity<List<BookDTO>> listaTodos(){
+	public ResponseEntity<List<BookDTO>> listAll(){
         return ResponseEntity.ok(service.listAll().stream().map((book) -> book.toDto()).toList());
 }
     

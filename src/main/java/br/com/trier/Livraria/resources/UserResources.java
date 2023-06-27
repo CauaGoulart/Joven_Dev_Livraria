@@ -51,7 +51,7 @@ public class UserResources {
         }
 	
     @GetMapping
-	public ResponseEntity<List<UserDTO>> listaTodos(){
+	public ResponseEntity<List<UserDTO>> listAll(){
     return ResponseEntity.ok(service.listAll().stream().map((user) -> user.toDto()).toList());
     }  
 	

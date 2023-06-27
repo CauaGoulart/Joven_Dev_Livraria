@@ -20,8 +20,9 @@ import br.com.trier.Livraria.services.BookAuthorService;
 import br.com.trier.Livraria.services.BookService;
 
 @RestController
-@RequestMapping(value = "/book_author")
-public class BookAuthorResouces {
+@RequestMapping(value = "/book_genres")
+public class BookGenresResource {
+	
 	@Autowired
 	private BookAuthorService service;
 	
@@ -32,23 +33,23 @@ public class BookAuthorResouces {
 	private AuthorService authorService;
 	
 	@PostMapping
-	public ResponseEntity<BookAuthorDTO> insert(@RequestBody BookAuthorDTO authorBook) {
-		BookAuthor newBookAuthor = service.insert(new BookAuthor(authorBook));
+	public ResponseEntity<BookAuthorDTO> insert(@RequestBody BookAuthorDTO bookGenres) {
+		BookAuthor newBookAuthor = service.insert(new BookAuthor(bookGenres));
 		return ResponseEntity.ok(newBookAuthor.toDto());
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<BookAuthorDTO> findById(@PathVariable Integer id) {
-		BookAuthor authorBook = service.findById(id);
-        return ResponseEntity.ok(authorBook.toDto());		
+		BookAuthor bookGenres = service.findById(id);
+        return ResponseEntity.ok(bookGenres.toDto());		
         }
     
     @PutMapping("/{id}")
-	public ResponseEntity<BookAuthorDTO> update(@PathVariable Integer id, @RequestBody BookAuthorDTO authorBookDTO) {
-    	BookAuthor authorBook = new BookAuthor(authorBookDTO);
-		authorBook.setId(id);
-		authorBook = service.update(authorBook);
-		return ResponseEntity.ok(authorBook.toDto());
+	public ResponseEntity<BookAuthorDTO> update(@PathVariable Integer id, @RequestBody BookAuthorDTO bookGenresDTO) {
+    	BookAuthor bookGenres = new BookAuthor(bookGenresDTO);
+		bookGenres.setId(id);
+		bookGenres = service.update(bookGenres);
+		return ResponseEntity.ok(bookGenres.toDto());
 	}
     
     @DeleteMapping("/{id}")
@@ -59,24 +60,24 @@ public class BookAuthorResouces {
     
     @GetMapping
 	public ResponseEntity<List<BookAuthorDTO>> listAll(){
-        return ResponseEntity.ok(service.listAll().stream().map((authorBook) -> authorBook.toDto()).toList());
+        return ResponseEntity.ok(service.listAll().stream().map((bookGenres) -> bookGenres.toDto()).toList());
     }
     
     @GetMapping("/book/{idBook}")
    	public ResponseEntity<List<BookAuthorDTO>> findByBookIgnoreCase(@PathVariable Integer idBook){
-    	return ResponseEntity.ok(service.findByBookIgnoreCase(bookService.findById(idBook)).stream().map((authorBook) -> authorBook.toDto()).toList());
+    	return ResponseEntity.ok(service.findByBookIgnoreCase(bookService.findById(idBook)).stream().map((bookGenres) -> bookGenres.toDto()).toList());
            
     }
     
-    @GetMapping("/author/{idAuthor}")
-   	public ResponseEntity<List<BookAuthorDTO>> findByAuthorIgnoreCase(@PathVariable Integer idAuthor){
-    	return ResponseEntity.ok(service.findByAuthorIgnoreCase(authorService.findById(idAuthor)).stream().map((authorBook) -> authorBook.toDto()).toList());
+    @GetMapping("/author/{idGenres}")
+   	public ResponseEntity<List<BookAuthorDTO>> findByAuthorIgnoreCase(@PathVariable Integer idGenres){
+    	return ResponseEntity.ok(service.findByAuthorIgnoreCase(authorService.findById(idGenres)).stream().map((bookGenres) -> bookGenres.toDto()).toList());
            
     }
     
-    @GetMapping("/book-author/{idBook}/{idAuthor}")
-    public ResponseEntity<List<BookAuthorDTO>> findByBookAndAuthorIgnoreCase(@PathVariable Integer idBook, @PathVariable Integer idAuthor) {
-        return ResponseEntity.ok(service.findByBookAndAuthorIgnoreCase(bookService.findById(idBook), authorService.findById(idAuthor)).stream().map(BookAuthor::toDto).toList());
+    @GetMapping("/book-author/{idBook}/{idGenres}")
+    public ResponseEntity<List<BookAuthorDTO>> findByBookAndAuthorIgnoreCase(@PathVariable Integer idBook, @PathVariable Integer idGenres) {
+        return ResponseEntity.ok(service.findByBookAndAuthorIgnoreCase(bookService.findById(idBook), authorService.findById(idGenres)).stream().map(BookAuthor::toDto).toList());
     }
 
 }

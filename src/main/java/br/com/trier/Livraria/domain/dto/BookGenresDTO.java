@@ -1,8 +1,7 @@
 package br.com.trier.Livraria.domain.dto;
 
-import java.time.LocalDateTime;
-
-import br.com.trier.Livraria.domain.User;
+import br.com.trier.Livraria.domain.Book;
+import br.com.trier.Livraria.domain.Genres;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +9,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaleDTO {
+public class BookGenresDTO {
 	
 	private Integer id;
-	private LocalDateTime date;
-    private User user;
+	private Book book;
+	private Genres genres;
+
 
 }

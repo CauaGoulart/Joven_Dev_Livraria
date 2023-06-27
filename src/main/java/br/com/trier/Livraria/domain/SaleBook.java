@@ -1,6 +1,7 @@
 package br.com.trier.Livraria.domain;
 
 
+import br.com.trier.Livraria.domain.dto.SaleBookDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,4 +33,12 @@ public class SaleBook {
 	@ManyToOne
 	private Book book;
 
+	public SaleBook(SaleBookDTO dto) {
+		this(dto.getId(),dto.getSale(),dto.getBook());
+	}
+	
+	public SaleBookDTO toDto() {
+		return new SaleBookDTO(id,sale,book);
+	}
+	
 }

@@ -19,16 +19,16 @@ public class BookAuthorServiceImpl implements BookAuthorService{
 	private BookAuthorRepository repository;
 
 	@Override
-	public BookAuthor insert(BookAuthor piloto) {
+	public BookAuthor insert(BookAuthor bookAuthor) {
 		
-		return repository.save(piloto);
+		return repository.save(bookAuthor);
 	}
 
 	@Override
 	public List<BookAuthor> listAll() {
 		List<BookAuthor> list = repository.findAll();
 		if(list.size() == 0) {
-			throw new ObjectNotFound("Nenhum piloto cadastrado");
+			throw new ObjectNotFound("No bookAuthor registered.");
 		}
 		
 		return list;
@@ -36,25 +36,25 @@ public class BookAuthorServiceImpl implements BookAuthorService{
 
 	@Override
 	public BookAuthor findById(Integer id) {
-		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("BookAuthor com id %s não existe".formatted(id)));
+		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("BookAuthor with id %s does not exist.".formatted(id)));
 
 	}
 
 	@Override
-	public List<BookAuthor> findByBook(Book book) {
-		List<BookAuthor> list = repository.findByBook(book);
+	public List<BookAuthor> findByBookIgnoreCase(Book book) {
+		List<BookAuthor> list = repository.findByBookIgnoreCase(book);
 		if(list.size() == 0) {
-			throw new ObjectNotFound("Nenhum piloto no país %s".formatted(book));
+			throw new ObjectNotFound("No book found: %s.".formatted(book));
 		}
 		
 		return list;
 	}
 
 	@Override
-	public List<BookAuthor> findByAuthor(Author author) {
-		List<BookAuthor> list = repository.findByAuthor(author);
+	public List<BookAuthor> findByAuthorIgnoreCase(Author author) {
+		List<BookAuthor> list = repository.findByAuthorIgnoreCase(author);
 		if(list.size() == 0) {
-			throw new ObjectNotFound("Nenhum piloto na equipe %s".formatted(author));
+			throw new ObjectNotFound("No author found: %s.".formatted(author));
 		}
 		
 		return list;
@@ -68,9 +68,19 @@ public class BookAuthorServiceImpl implements BookAuthorService{
 
 	@Override
 	public void delete(Integer id) {
-		BookAuthor piloto = findById(id);
-		repository.delete(piloto);
+		BookAuthor bookAuthor = findById(id);
+		repository.delete(bookAuthor);
 		
+	}
+
+	@Override
+	public List<BookAuthor> findByBookAndAuthorIgnoreCase(Book book, Author author) {
+		List<BookAuthor> list = repository.findByBookAndAuthorIgnoreCase(book,author);
+		if(list.size() == 0) {
+			throw new ObjectNotFound("Nothing found for this search: %s.".formatted(book,author));
+		}
+		
+		return list;
 	}
 
 }
