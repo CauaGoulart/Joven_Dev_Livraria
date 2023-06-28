@@ -1,0 +1,1 @@
+delete from client where id_client > 0;
