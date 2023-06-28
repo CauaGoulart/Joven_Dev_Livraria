@@ -1,0 +1,1 @@
+delete from book where id_book > 0;

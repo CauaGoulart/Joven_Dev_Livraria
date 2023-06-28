@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.trier.Livraria.domain.Book;
 import br.com.trier.Livraria.repositories.BookRepository;
 import br.com.trier.Livraria.services.BookService;
+import br.com.trier.Livraria.services.exceptions.IntegrityViolation;
 import br.com.trier.Livraria.services.exceptions.ObjectNotFound;
 
 @Service
@@ -16,10 +17,29 @@ public class BookServiceImpl implements BookService{
 	
 	@Autowired
 	BookRepository repository;
+	
+	private void validateBook(Book obj) {
+		validateTitle(obj.getTitle());
+		validatePrice(obj.getPrice());
+	    
+	}
+	
+	private void validateTitle(String tilte) {
+	    if (tilte.isBlank()) {
+	        throw new IntegrityViolation("Titulo não pode estar vazio.");
+	    }
+	}
+	
+	private void validatePrice(Integer price) {
+	    if (price == null) {
+	        throw new IntegrityViolation("Preço não pode estar vazio.");
+	    }
+	}
 
 	@Override
-	public Book insert(Book livro) {
-		return repository.save(livro);
+	public Book insert(Book book) {
+		validateBook(book);
+		return repository.save(book);
 	}
 
 	@Override
@@ -47,7 +67,7 @@ public class BookServiceImpl implements BookService{
 	public Optional<Book> findByTitleIgnoreCase(String title) {
 		Optional<Book> list = repository.findByTitleIgnoreCase(title);
 		if (list.isEmpty()) {
-			throw new ObjectNotFound("No book name starts with %s." .formatted(title));
+			throw new ObjectNotFound("Nenhum livro com o titulo %s." .formatted(title));
 		}
 		return repository.findByTitleIgnoreCase(title);
 
@@ -57,7 +77,7 @@ public class BookServiceImpl implements BookService{
 	public Optional<Book> findByPrice(Integer price) {
 		Optional<Book> list = repository.findByPrice(price);
 		if (list.isEmpty()) {
-			throw new ObjectNotFound("No book that has that price: %s." .formatted(price));
+			throw new ObjectNotFound("Nenhum livro com esse preço: %s." .formatted(price));
 		}
 		return repository.findByPrice(price);
 	}

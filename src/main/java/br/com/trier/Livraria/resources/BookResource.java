@@ -35,7 +35,7 @@ public class BookResource {
 		 return ResponseEntity.ok(book.toDto());	
 	}
 	
-	 @GetMapping("/name/{name}")
+	 @GetMapping("/title/{title}")
 		public ResponseEntity<List<Book>> findByTitleIgnoreCase(@PathVariable String title){
 	        return ResponseEntity.ok(service.findByTitleIgnoreCase(title).stream().map((book) -> book).toList());
 		}

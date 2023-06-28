@@ -20,7 +20,7 @@ import br.com.trier.Livraria.services.exceptions.ObjectNotFound;
 public class ClientServiceTest extends BaseTest{
 	
 	@Autowired
-	ClientService clientService;
+	private ClientService clientService;
 
 	@Test
 	@DisplayName("Teste buscar client por id")
