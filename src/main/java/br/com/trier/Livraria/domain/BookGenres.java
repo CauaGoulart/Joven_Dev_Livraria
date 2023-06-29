@@ -22,7 +22,7 @@ public class BookGenres {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_book-genres")
+	@Column(name = "id_book_genres")
 	@Setter
 	private Integer id;
 	

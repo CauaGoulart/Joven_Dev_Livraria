@@ -24,7 +24,7 @@ public class BookServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste buscar book por ID")
-	@Sql({"classpath:/resources/sqls/clearTable_book.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/book.sql"})
 	void findByIdTest() {
 		Book book = bookService.findById(1);
@@ -35,7 +35,7 @@ public class BookServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste buscar book por ID inexistente")
-	@Sql({"classpath:/resources/sqls/clearTable_book.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/book.sql"})
 	void findByIdNonExistentTest() {
 		var exception = assertThrows(ObjectNotFound.class, () -> bookService.findById(10));
@@ -45,7 +45,7 @@ public class BookServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste listar todos")
-	@Sql({"classpath:/resources/sqls/clearTable_book.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/book.sql"})
 	void listAllTest() {
 		List<Book> list = bookService.listAll();
@@ -54,7 +54,7 @@ public class BookServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste incluir book")
-	@Sql({"classpath:/resources/sqls/clearTable_book.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	void insertBookTest() {
 		Book book = new Book(null,"nome", 90);
 		bookService.insert(book);
@@ -66,7 +66,7 @@ public class BookServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste alterar book")
-	@Sql({"classpath:/resources/sqls/clearTable_book.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/book.sql"})
 	void updateBookTest() {
 		Book book = new Book(1,"altera", null);
@@ -79,7 +79,7 @@ public class BookServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste deletar book")
-	@Sql({"classpath:/resources/sqls/clearTable_book.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/book.sql"})
 	void deleteBookTest() {
 		bookService.delete(1);
@@ -90,7 +90,7 @@ public class BookServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste procurar book que começa com")
-	@Sql({"classpath:/resources/sqls/clearTable_book.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/book.sql"})
 	void findBookNameStatsWithTest() {
 		Optional<Book> list = bookService.findByTitleIgnoreCase("Book 2");
@@ -102,7 +102,7 @@ public class BookServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste deletar book inexistente")
-	@Sql({"classpath:/resources/sqls/clearTable_book.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({ "classpath:/resources/sqls/book.sql" })
 	void deleteNonExistentUserTest() {
 		  var exception = assertThrows(ObjectNotFound.class, () -> bookService.delete(10));
@@ -129,7 +129,7 @@ public class BookServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste buscar livro por título")
-	@Sql({"classpath:/resources/sqls/clearTable_book.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/book.sql"})
 	void findByTitleIgnoreCaseTest() {
 	    Optional<Book> result = bookService.findByTitleIgnoreCase("Book 2");
@@ -138,7 +138,7 @@ public class BookServiceTest extends BaseTest{
 
 	@Test
 	@DisplayName("Teste buscar livro por preço")
-	@Sql({"classpath:/resources/sqls/clearTable_book.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/book.sql"})
 	void findByPriceTest() {
 	    Optional<Book> result = bookService.findByPrice(20);
@@ -147,7 +147,7 @@ public class BookServiceTest extends BaseTest{
 
 	@Test
 	@DisplayName("Teste buscar livro por preço inexistente")
-	@Sql({"classpath:/resources/sqls/clearTable_book.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/book.sql"})
 	void findByNonExistentPriceTest() {
 	    var exception = assertThrows(ObjectNotFound.class, () -> bookService.findByPrice(100));

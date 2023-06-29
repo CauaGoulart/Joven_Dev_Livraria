@@ -28,7 +28,7 @@ public class BookAuthorServiceImpl implements BookAuthorService{
 	public List<BookAuthor> listAll() {
 		List<BookAuthor> list = repository.findAll();
 		if(list.size() == 0) {
-			throw new ObjectNotFound("No bookAuthor registered.");
+			throw new ObjectNotFound("Nenhum registro encontrado.");
 		}
 		
 		return list;
@@ -36,7 +36,7 @@ public class BookAuthorServiceImpl implements BookAuthorService{
 
 	@Override
 	public BookAuthor findById(Integer id) {
-		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("BookAuthor with id %s does not exist.".formatted(id)));
+		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("Nenhum resultado com o id %s.".formatted(id)));
 
 	}
 
@@ -44,7 +44,7 @@ public class BookAuthorServiceImpl implements BookAuthorService{
 	public List<BookAuthor> findByBook(Book book) {
 		List<BookAuthor> list = repository.findByBook(book);
 		if(list.size() == 0) {
-			throw new ObjectNotFound("No book found: %s.".formatted(book));
+			throw new ObjectNotFound("Livro não encontrado: %s.".formatted(book));
 		}
 		
 		return list;
@@ -54,7 +54,7 @@ public class BookAuthorServiceImpl implements BookAuthorService{
 	public List<BookAuthor> findByAuthor(Author author) {
 		List<BookAuthor> list = repository.findByAuthor(author);
 		if(list.size() == 0) {
-			throw new ObjectNotFound("No author found: %s.".formatted(author));
+			throw new ObjectNotFound("Autor não encontrado: %s.".formatted(author));
 		}
 		
 		return list;
@@ -77,7 +77,7 @@ public class BookAuthorServiceImpl implements BookAuthorService{
 	public List<BookAuthor> findByBookAndAuthor(Book book, Author author) {
 		List<BookAuthor> list = repository.findByBookAndAuthor(book,author);
 		if(list.size() == 0) {
-			throw new ObjectNotFound("Nothing found for this search: %s.".formatted(book,author));
+			throw new ObjectNotFound("Nenhum resultado para esta pesquisa.");
 		}
 		
 		return list;

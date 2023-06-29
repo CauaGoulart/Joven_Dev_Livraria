@@ -26,7 +26,7 @@ public class GenresServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste buscar genres por ID")
-	@Sql({"classpath:/resources/sqls/clearTable_genres.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/genres.sql"})
 	void findByIdTest() {
 		Genres genres = genresService.findById(1);
@@ -37,7 +37,7 @@ public class GenresServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste buscar genres por ID inexistente")
-	@Sql({"classpath:/resources/sqls/clearTable_genres.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/genres.sql"})
 	void findByIdNonExistentTest() {
 		var exception = assertThrows(ObjectNotFound.class, () -> genresService.findById(10));
@@ -47,7 +47,7 @@ public class GenresServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste listar todos")
-	@Sql({"classpath:/resources/sqls/clearTable_genres.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/genres.sql"})
 	void listAllTest() {
 		List<Genres> list = genresService.listAll();
@@ -55,20 +55,18 @@ public class GenresServiceTest extends BaseTest{
 	}
 	
 	@Test
-	@DisplayName("Teste incluir genres")
-	@Sql({"classpath:/resources/sqls/clearTable_genres.sql"})
+	@DisplayName("Teste cadastrar genres")
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	void insertGenresTest() {
-		Genres genres = new Genres(null,"nome");
-		genresService.insert(genres);
+		Genres genres = genresService.insert(new Genres(1,"nome"));
 		assertThat(genres).isNotNull();
-		genres = genresService.findById(1);
 		assertEquals(1, genres.getId());
 		assertEquals("nome", genres.getGenres());
 	}
 	
 	@Test
 	@DisplayName("Teste alterar genres")
-	@Sql({"classpath:/resources/sqls/clearTable_genres.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/genres.sql"})
 	void updateGenresTest() {
 		Genres genres = new Genres(1,"altera");
@@ -81,7 +79,7 @@ public class GenresServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste deletar genres")
-	@Sql({"classpath:/resources/sqls/clearTable_genres.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/genres.sql"})
 	void deleteGenresTest() {
 		genresService.delete(1);
@@ -92,7 +90,7 @@ public class GenresServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste procurar genres que começa com")
-	@Sql({"classpath:/resources/sqls/clearTable_genres.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/genres.sql"})
 	void findGenresNameStatsWithTest() {
 		Optional<Genres> list = genresService.findByGenresIgnoreCase("Genres 2");
@@ -104,7 +102,7 @@ public class GenresServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste deletar genres inexistente")
-	@Sql({"classpath:/resources/sqls/clearTable_genres.sql"})
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({ "classpath:/resources/sqls/genres.sql" })
 	void deleteNonExistentUserTest() {
 		  var exception = assertThrows(ObjectNotFound.class, () -> genresService.delete(10));

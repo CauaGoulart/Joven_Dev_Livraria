@@ -28,7 +28,7 @@ public class BookGenresServiceImpl implements BookGenresService{
 	public List<BookGenres> listAll() {
 		List<BookGenres> list = repository.findAll();
 		if(list.size() == 0) {
-			throw new ObjectNotFound("No bookGenres registered.");
+			throw new ObjectNotFound("Nenhum registro encontrado.");
 		}
 		
 		return list;
@@ -36,7 +36,7 @@ public class BookGenresServiceImpl implements BookGenresService{
 
 	@Override
 	public BookGenres findById(Integer id) {
-		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("BookGenres with id %s does not exist.".formatted(id)));
+		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("Nenhum resultado com o id %s.".formatted(id)));
 
 	}
 
@@ -44,7 +44,7 @@ public class BookGenresServiceImpl implements BookGenresService{
 	public List<BookGenres> findByBook(Book book) {
 		List<BookGenres> list = repository.findByBook(book);
 		if(list.size() == 0) {
-			throw new ObjectNotFound("No book found: %s.".formatted(book));
+			throw new ObjectNotFound("Livro não encontrado: %s.".formatted(book));
 		}
 		
 		return list;
@@ -54,7 +54,7 @@ public class BookGenresServiceImpl implements BookGenresService{
 	public List<BookGenres> findByGenres(Genres genres) {
 		List<BookGenres> list = repository.findByGenres(genres);
 		if(list.size() == 0) {
-			throw new ObjectNotFound("No genres found: %s.".formatted(genres));
+			throw new ObjectNotFound("Gênero não encontrado: %s.".formatted(genres));
 		}
 		
 		return list;
@@ -77,7 +77,7 @@ public class BookGenresServiceImpl implements BookGenresService{
 	public List<BookGenres> findByGenresAndBook(Genres genres, Book book) {
 		List<BookGenres> list = repository.findByGenresAndBook(genres,book);
 		if(list.size() == 0) {
-			throw new ObjectNotFound("Nothing found for this search: %s.".formatted(genres,book));
+			throw new ObjectNotFound("Nenhum resultado para esta pesquisa.");
 		}
 		
 		return list;

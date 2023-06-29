@@ -29,7 +29,7 @@ public class AuthorServiceImpl implements AuthorService{
 
 	@Override
 	public Author findById(Integer id) {
-		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("Author with id %s does not exist.".formatted(id)));
+		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("Autor com id %s não foi encontrado.".formatted(id)));
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class AuthorServiceImpl implements AuthorService{
 	public Optional<Author> findByNameIgnoreCase(String name) {
 		Optional<Author> lista = repository.findByNameIgnoreCase(name);
 		if (lista.isEmpty()) {
-			throw new ObjectNotFound("No author's name starts with %s." .formatted(name));
+			throw new ObjectNotFound("Nenhum autor com o nome %s encontrado" .formatted(name));
 		}
 		return repository.findByNameIgnoreCase(name);
 
@@ -55,11 +55,11 @@ public class AuthorServiceImpl implements AuthorService{
 	
 	@Override
 	public Optional<Author> findByGenderIgnoreCase(String gender) {
-		Optional<Author> lista = repository.findByNameIgnoreCase(gender);
+		Optional<Author> lista = repository.findByGenderIgnoreCase(gender);
 		if (lista.isEmpty()) {
-			throw new ObjectNotFound("No author's gender with the gender %s." .formatted(gender));
+			throw new ObjectNotFound("Nenhum autor com o gênero %s encontrado" .formatted(gender));
 		}
-		return repository.findByNameIgnoreCase(gender);
+		return repository.findByGenderIgnoreCase(gender);
 
 	}
 

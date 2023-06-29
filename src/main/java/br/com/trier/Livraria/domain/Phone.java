@@ -1,6 +1,6 @@
 package br.com.trier.Livraria.domain;
 
-import br.com.trier.Livraria.domain.dto.BookAuthorDTO;
+import br.com.trier.Livraria.domain.dto.PhoneDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,30 +14,31 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Entity(name = "book_author")
-public class BookAuthor {
+@Entity(name = "phone")
+public class Phone {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_book_author")
+	@Column(name = "id_phone")
 	@Setter
 	private Integer id;
 	
-	@ManyToOne
-	private Book book;
+	@Column(name = "phone_number")
+	private String number;
 	
 	@ManyToOne
-	private Author author;
+	private Client client;
 	
-	public BookAuthor(BookAuthorDTO dto) {
-		this(dto.getId(),dto.getBook(),dto.getAuthor());
+	public Phone(PhoneDTO dto) {
+		this(dto.getId(),dto.getNumber(),dto.getClient());
 	}
 	
-	public BookAuthorDTO toDto() {
-		return new BookAuthorDTO(id,book,author);
+	public PhoneDTO toDto() {
+		return new PhoneDTO(id,number,client);
 	}
 
 }

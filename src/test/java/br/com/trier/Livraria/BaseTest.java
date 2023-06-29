@@ -7,15 +7,15 @@ import org.springframework.test.context.ActiveProfiles;
 
 import br.com.trier.Livraria.services.AuthorService;
 import br.com.trier.Livraria.services.BookAuthorService;
+import br.com.trier.Livraria.services.BookGenresService;
 import br.com.trier.Livraria.services.BookService;
 import br.com.trier.Livraria.services.GenresService;
-import br.com.trier.Livraria.services.SaleService;
 import br.com.trier.Livraria.services.ClientService;
 import br.com.trier.Livraria.services.impl.AuthorServiceImpl;
 import br.com.trier.Livraria.services.impl.BookAuthorServiceImpl;
+import br.com.trier.Livraria.services.impl.BookGenresServiceImpl;
 import br.com.trier.Livraria.services.impl.BookServiceImpl;
 import br.com.trier.Livraria.services.impl.GenresServiceImpl;
-import br.com.trier.Livraria.services.impl.SaleServiceImpl;
 import br.com.trier.Livraria.services.impl.ClientServiceImpl;
 
 
@@ -47,5 +47,10 @@ public class BaseTest {
 	@Bean
 	public BookAuthorService bookAuthorService() {
 		return new BookAuthorServiceImpl();
+	}
+	
+	@Bean
+	public BookGenresService bookGenresService() {
+		return new BookGenresServiceImpl();
 	}
 }
