@@ -17,10 +17,9 @@ public class SaleBookServiceImpl implements SaleBookService{
 	
 	@Autowired
 	private SaleBookRepository repository;
-
+	
 	@Override
 	public SaleBook insert(SaleBook saleBook) {
-		
 		return repository.save(saleBook);
 	}
 
@@ -28,7 +27,7 @@ public class SaleBookServiceImpl implements SaleBookService{
 	public List<SaleBook> listAll() {
 		List<SaleBook> list = repository.findAll();
 		if(list.size() == 0) {
-			throw new ObjectNotFound("No saleBook registered.");
+			throw new ObjectNotFound("Nenhum registro encontrado.");
 		}
 		
 		return list;
@@ -36,7 +35,7 @@ public class SaleBookServiceImpl implements SaleBookService{
 
 	@Override
 	public SaleBook findById(Integer id) {
-		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("SaleBook with id %s does not exist.".formatted(id)));
+		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("Nenhum resultado com o id %s.".formatted(id)));
 
 	}
 
@@ -44,7 +43,7 @@ public class SaleBookServiceImpl implements SaleBookService{
 	public List<SaleBook> findByBook(Book book) {
 		List<SaleBook> list = repository.findByBook(book);
 		if(list.size() == 0) {
-			throw new ObjectNotFound("No book found: %s.".formatted(book));
+			throw new ObjectNotFound("Livro não encontrado: %s.".formatted(book));
 		}
 		
 		return list;
@@ -54,7 +53,7 @@ public class SaleBookServiceImpl implements SaleBookService{
 	public List<SaleBook> findBySale(Sale sale) {
 		List<SaleBook> list = repository.findBySale(sale);
 		if(list.size() == 0) {
-			throw new ObjectNotFound("No sale found: %s.".formatted(sale));
+			throw new ObjectNotFound("Venda não encontrada: %s.".formatted(sale));
 		}
 		
 		return list;
@@ -77,7 +76,17 @@ public class SaleBookServiceImpl implements SaleBookService{
 	public List<SaleBook> findByBookAndSale(Book book, Sale sale) {
 		List<SaleBook> list = repository.findByBookAndSale(book,sale);
 		if(list.size() == 0) {
-			throw new ObjectNotFound("Nothing found for this search: %s.".formatted(book,sale));
+			throw new ObjectNotFound("Nenhum resultado para esta pesquisa.".formatted(book,sale));
+		}
+		
+		return list;
+	}
+
+	@Override
+	public List<SaleBook> findByQt(Integer qt) {
+		List<SaleBook> list = repository.findByQt(qt);
+		if(list.size() == 0) {
+			throw new ObjectNotFound("Quantidade não encontrada: %s.".formatted(qt));
 		}
 		
 		return list;

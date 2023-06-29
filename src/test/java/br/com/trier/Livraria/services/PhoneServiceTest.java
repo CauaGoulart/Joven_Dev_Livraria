@@ -15,6 +15,7 @@ import org.springframework.test.context.jdbc.Sql;
 import br.com.trier.Livraria.BaseTest;
 import br.com.trier.Livraria.domain.Client;
 import br.com.trier.Livraria.domain.Phone;
+import br.com.trier.Livraria.services.exceptions.IntegrityViolation;
 import br.com.trier.Livraria.services.exceptions.ObjectNotFound;
 
 public class PhoneServiceTest extends BaseTest{
@@ -168,5 +169,19 @@ public class PhoneServiceTest extends BaseTest{
 		assertEquals("Nenhum resultado para esta pesquisa.", exception.getMessage());
 
 	}
+	
+	@Test
+	@DisplayName("Test validate empty number")
+	@Sql({ "classpath:/resources/sqls/clearTable.sql", "classpath:/resources/sqls/client.sql" })
+	void validateEmptyNumber() {
+	    var exception = assertThrows(IntegrityViolation.class, () -> {
+	        Client client = new Client(null, "", "test123@gmail.com", "123");
+	        Phone phone = new Phone(null, "", client);
+	        service.insert(phone);
+	    });
+	    
+	    assertEquals("Número não pode estar vazio.", exception.getMessage());	
+	}
+
 
 }

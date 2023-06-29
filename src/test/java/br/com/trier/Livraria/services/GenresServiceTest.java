@@ -58,9 +58,9 @@ public class GenresServiceTest extends BaseTest{
 	@DisplayName("Teste cadastrar genres")
 	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	void insertGenresTest() {
-		Genres genres = genresService.insert(new Genres(1,"nome"));
+		Genres genres = genresService.insert(new Genres(2,"nome"));
 		assertThat(genres).isNotNull();
-		assertEquals(1, genres.getId());
+		assertEquals(2, genres.getId());
 		assertEquals("nome", genres.getGenres());
 	}
 	

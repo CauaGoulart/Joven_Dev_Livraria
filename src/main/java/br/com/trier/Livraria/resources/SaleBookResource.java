@@ -75,6 +75,12 @@ public class SaleBookResource {
            
     }
     
+    @GetMapping("/author/{qt}")
+   	public ResponseEntity<List<SaleBookDTO>> findByQt(@PathVariable Integer qt){
+    	return ResponseEntity.ok(service.findByQt(qt).stream().map((saleBook) -> saleBook.toDto()).toList());
+           
+    }
+    
     @GetMapping("/book-author/{idBook}/{idSale}")
     public ResponseEntity<List<SaleBookDTO>> findByBookAndSale(@PathVariable Integer idBook, @PathVariable Integer idSale) {
         return ResponseEntity.ok(service.findByBookAndSale(bookService.findById(idBook), saleService.findById(idSale)).stream().map(SaleBook::toDto).toList());

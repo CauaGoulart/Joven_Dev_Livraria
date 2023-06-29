@@ -57,9 +57,9 @@ public class ClientServiceTest extends BaseTest{
 	@DisplayName("Teste cadastrar client")
 	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	void insert() {
-		Client client = clientService.insert(new Client(null, "test", "test123@gmail.com", "123"));
+		Client client = clientService.insert(new Client(2, "test", "test123@gmail.com", "123"));
 		assertThat(client).isNotNull();
-		assertEquals(1, client.getId());
+		assertEquals(2, client.getId());
 		assertEquals("test", client.getName());
 		assertEquals("test123@gmail.com", client.getEmail());
 		assertEquals("123", client.getPassword());

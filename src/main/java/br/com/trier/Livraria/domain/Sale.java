@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -28,7 +29,7 @@ public class Sale {
 	@Setter
 	private Integer id;
 	
-	@Column(name = "date_sale", columnDefinition = "timestamp(6) USING date_sale::timestamp(6) without time zone")
+	@Column(name = "date_sale")
 	private LocalDateTime date;
 	
 	@ManyToOne

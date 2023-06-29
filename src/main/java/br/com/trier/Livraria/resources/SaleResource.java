@@ -29,7 +29,7 @@ public class SaleResource {
 	private SaleService service;
 	
 	@Autowired
-	private ClientService userService;
+	private ClientService clientService;
 	
 	@PostMapping
 	public ResponseEntity<SaleDTO> insert(@RequestBody SaleDTO sale) {
@@ -64,7 +64,7 @@ public class SaleResource {
     
     @GetMapping("/user/{idClient}")
    	public ResponseEntity<List<SaleDTO>> findByClient(@PathVariable Integer idClient){
-    	return ResponseEntity.ok(service.findByClient(userService.findById(idClient)).stream().map((sale) -> sale.toDto()).toList());
+    	return ResponseEntity.ok(service.findByClient(clientService.findById(idClient)).stream().map((sale) -> sale.toDto()).toList());
            
     }
     
@@ -74,6 +74,5 @@ public class SaleResource {
         Optional<Sale> sales = service.findByDate(date);
         return ResponseEntity.ok(sales.stream().map(Sale::toDto).toList());
     }
-
 
 }

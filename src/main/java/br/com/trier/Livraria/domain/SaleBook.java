@@ -23,7 +23,7 @@ public class SaleBook {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_sale-book")
+	@Column(name = "id_SB")
 	@Setter
 	private Integer id;
 	
@@ -33,12 +33,15 @@ public class SaleBook {
 	@ManyToOne
 	private Book book;
 
+	@Column(name = "quant_sell")
+	private Integer qt;
+	
 	public SaleBook(SaleBookDTO dto) {
-		this(dto.getId(),dto.getSale(),dto.getBook());
+		this(dto.getId(),dto.getSale(),dto.getBook(),dto.getQt());
 	}
 	
 	public SaleBookDTO toDto() {
-		return new SaleBookDTO(id,sale,book);
+		return new SaleBookDTO(id,sale,book,qt);
 	}
 	
 }

@@ -13,12 +13,9 @@ import org.springframework.test.context.jdbc.Sql;
 
 import br.com.trier.Livraria.BaseTest;
 import br.com.trier.Livraria.domain.Genres;
-import br.com.trier.Livraria.domain.Author;
 import br.com.trier.Livraria.domain.Book;
-import br.com.trier.Livraria.domain.BookAuthor;
 import br.com.trier.Livraria.domain.BookGenres;
 import br.com.trier.Livraria.services.exceptions.ObjectNotFound;
-import jakarta.transaction.Transactional;
 
 public class BookGenresServiceTest extends BaseTest{
 	

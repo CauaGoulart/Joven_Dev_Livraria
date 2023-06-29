@@ -14,6 +14,7 @@ public interface SaleBookRepository extends JpaRepository<SaleBook, Integer>{
 	
 	List<SaleBook> findByBook(Book book);
 	List<SaleBook> findBySale(Sale sale);
+	List<SaleBook> findByQt(Integer qt);
 	List<SaleBook> findByBookAndSale(Book book,Sale sale);
 
 }

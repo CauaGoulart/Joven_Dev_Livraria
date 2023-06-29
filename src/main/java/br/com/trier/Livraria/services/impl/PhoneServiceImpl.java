@@ -10,6 +10,7 @@ import br.com.trier.Livraria.domain.Client;
 import br.com.trier.Livraria.domain.Phone;
 import br.com.trier.Livraria.repositories.PhoneRepository;
 import br.com.trier.Livraria.services.PhoneService;
+import br.com.trier.Livraria.services.exceptions.IntegrityViolation;
 import br.com.trier.Livraria.services.exceptions.ObjectNotFound;
 
 @Service
@@ -17,11 +18,19 @@ public class PhoneServiceImpl implements PhoneService{
 	
 	@Autowired
 	private PhoneRepository repository;
+	
+	private void validateNumber(String number) {
+	    if (number.isBlank()) {
+	        throw new IntegrityViolation("Número não pode estar vazio.");
+	    }
+	}
 
 	@Override
 	public Phone insert(Phone phone) {
+		validateNumber(phone.getNumber());
 		return repository.save(phone);
 	}
+	
 
 	@Override
 	public List<Phone> listAll() {
@@ -61,6 +70,7 @@ public class PhoneServiceImpl implements PhoneService{
 
 	@Override
 	public Phone update(Phone phone) {
+		validateNumber(phone.getNumber());
 		findById(phone.getId());
 		return repository.save(phone);
 	}

@@ -21,14 +21,16 @@ public class SaleServiceImpl implements SaleService{
 
 	@Override
 	public Sale insert(Sale sale) {
-		return repository.save(sale);
+	    sale.setDate(LocalDateTime.now());
+	    return repository.save(sale);
 	}
+
 
 	@Override
 	public List<Sale> listAll() {
 		List<Sale> list = repository.findAll();
 		if(list.size() == 0) {
-			throw new ObjectNotFound("No sale registered.");
+			throw new ObjectNotFound("Nenhuma venda registrada.");
 		}
 		
 		return list;
@@ -36,7 +38,7 @@ public class SaleServiceImpl implements SaleService{
 
 	@Override
 	public Sale findById(Integer id) {
-		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("Sale with id %s does not exist.".formatted(id)));
+		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("Venda com id %s não encontrada.".formatted(id)));
 
 	}
 
@@ -57,7 +59,7 @@ public class SaleServiceImpl implements SaleService{
 	public Optional<Sale> findByDate(LocalDateTime date) {
 		Optional<Sale> lista = repository.findByDate(date);
 		if (lista.isEmpty()) {
-			throw new ObjectNotFound("No sale made in this date: %s." .formatted(date));
+			throw new ObjectNotFound("Nenhuma venda nesta data: %s." .formatted(date));
 		}
 		return repository.findByDate(date);
 
@@ -67,7 +69,7 @@ public class SaleServiceImpl implements SaleService{
 	public List<Sale> findByClient(Client client) {
 		List<Sale> list = repository.findByClient(client);
 		if(list.size() == 0) {
-			throw new ObjectNotFound("No client found: %s.".formatted(client));
+			throw new ObjectNotFound("Nenhum cliente encontrado: %s.".formatted(client));
 		}
 		
 		return list;

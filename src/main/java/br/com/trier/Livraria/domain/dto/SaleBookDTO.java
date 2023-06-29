@@ -14,5 +14,6 @@ public class SaleBookDTO {
 	private Integer id;
 	private Sale sale;
 	private Book book;
+	private Integer qt;
 
 }
