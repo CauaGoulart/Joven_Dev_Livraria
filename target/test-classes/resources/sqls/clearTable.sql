@@ -1,4 +1,6 @@
 delete from phone where id_phone > 0;
+delete from sale_book where id_SB > 0;
+delete from sale where id_sale > 0;
 delete from book_author where id_book_author > 0;
 delete from book_genres where id_book_genres > 0;
 delete from author where id_author > 0;
