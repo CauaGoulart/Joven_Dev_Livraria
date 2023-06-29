@@ -30,7 +30,7 @@ import br.com.trier.Livraria.domain.dto.BookDTO;
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = Replace.ANY)
 @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/book.sql")
-@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:/resources/sqls/clearTable_book.sql")
+@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:/resources/sqls/clearTable.sql")
 @SpringBootTest(classes = LivrariaApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 
 public class BookResourceTest {
@@ -59,7 +59,7 @@ public class BookResourceTest {
 
 	@Test
 	@DisplayName("Buscar por id inexistente")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable_book.sql")
+	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
 	public void testGetNotFound() {
 		ResponseEntity<Book> response = getbook("/book/300");
 		assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
@@ -67,7 +67,7 @@ public class BookResourceTest {
 
 	@Test
 	@DisplayName("Inserir novo país")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable_book.sql")
+	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
 	public void testInsert() {
 	    BookDTO dto = new BookDTO(1,"New Book", 90);
 
@@ -86,7 +86,7 @@ public class BookResourceTest {
 
 	@Test
 	@DisplayName("Atualizar book")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable_book.sql")
+	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
 	public void testUpdatebook() {
 		Book book = new Book(1, "teste", null);
 		HttpHeaders headers = new HttpHeaders();
@@ -100,7 +100,7 @@ public class BookResourceTest {
 
 	@Test
 	@DisplayName("Excluir book")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable_book.sql")
+	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
 	@Sql(scripts = "classpath:/resources/sqls/book.sql")
 	public void testDeletebook() {
 		ResponseEntity<Void> responseEntity = rest.exchange("/book/1", HttpMethod.DELETE, null, Void.class);
@@ -111,7 +111,7 @@ public class BookResourceTest {
 
 	@Test
 	@DisplayName("Buscar book por titulo")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable_book.sql")
+	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
 	@Sql(scripts = "classpath:/resources/sqls/book.sql")
 	public void testGetbookByName() {
 		ResponseEntity<List<Book>> response = getbooks("/book/title/Book 1");
@@ -121,7 +121,7 @@ public class BookResourceTest {
 
 	@Test
 	@DisplayName("Listar todos os book")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable_book.sql")
+	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
 	public void testGetAllbook() {
 		ResponseEntity<List<Book>> response = getbooks("/book");
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
@@ -129,7 +129,7 @@ public class BookResourceTest {
 
 	@Test
 	@DisplayName("Cadastrar book - BadRequest")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable_book.sql")
+	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
 	public void testCreatebookBadRequest() {
 		BookDTO dto = null;
 		HttpHeaders headers = new HttpHeaders();
@@ -142,7 +142,7 @@ public class BookResourceTest {
 
 	@Test
 	@DisplayName("Atualizar book - BadRequest")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable_book.sql")
+	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
 	public void testUpdatebookBadRequest() {
 		BookDTO dto = null;
 		HttpHeaders headers = new HttpHeaders();
@@ -154,7 +154,7 @@ public class BookResourceTest {
 	}
 
 	@Test
-	@Sql(scripts = "classpath:/resources/sqls/clearTable_book.sql")
+	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
 	public void testUpdatebookNotFound() {
 		BookDTO dto = null;
 		HttpHeaders headers = new HttpHeaders();
