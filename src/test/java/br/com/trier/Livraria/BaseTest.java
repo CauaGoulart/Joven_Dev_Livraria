@@ -11,6 +11,7 @@ import br.com.trier.Livraria.services.BookGenresService;
 import br.com.trier.Livraria.services.BookService;
 import br.com.trier.Livraria.services.ClientService;
 import br.com.trier.Livraria.services.GenresService;
+import br.com.trier.Livraria.services.ReportService;
 import br.com.trier.Livraria.services.SaleBookService;
 import br.com.trier.Livraria.services.SaleService;
 import br.com.trier.Livraria.services.impl.AuthorServiceImpl;
@@ -19,6 +20,7 @@ import br.com.trier.Livraria.services.impl.BookGenresServiceImpl;
 import br.com.trier.Livraria.services.impl.BookServiceImpl;
 import br.com.trier.Livraria.services.impl.ClientServiceImpl;
 import br.com.trier.Livraria.services.impl.GenresServiceImpl;
+import br.com.trier.Livraria.services.impl.ReportServiceImpl;
 import br.com.trier.Livraria.services.impl.SaleBookServiceImpl;
 import br.com.trier.Livraria.services.impl.SaleServiceImpl;
 
@@ -66,5 +68,10 @@ public class BaseTest {
 	@Bean
 	public SaleBookService salebookService() {
 		return new SaleBookServiceImpl();
+	}
+	
+	@Bean
+	public ReportService reportService() {
+		return new ReportServiceImpl(null, null);
 	}
 }

@@ -77,7 +77,7 @@ public class SaleBookServiceTest extends BaseTest{
 	void insert() {
 		Book book = new Book(null,"nome",34);
 		bookService.insert(book);
-		Client client = new Client(null,"exemplo","exemplo","exemplo");
+		Client client = new Client(null,"exemplo","exemplo","exemplo", null);
 		clientService.insert(client);
 		LocalDateTime date =  LocalDateTime.now();
 		Sale sale = saleService.insert(new Sale(null,date,client));
@@ -96,7 +96,7 @@ public class SaleBookServiceTest extends BaseTest{
 	void updateSaleBook() {
 		Book book = new Book(1,"nome",34);
 		bookService.update(book);
-		Client client = new Client(1,"exemplo","exemplo","exemplo");
+		Client client = new Client(1,"exemplo","exemplo","exemplo", null);
 		clientService.update(client);
 		LocalDateTime date =  LocalDateTime.now();
 		Sale sale = saleService.update(new Sale(1,date,client));

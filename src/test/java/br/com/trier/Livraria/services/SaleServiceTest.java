@@ -67,7 +67,7 @@ public class SaleServiceTest extends BaseTest{
 	@DisplayName("Teste cadastrar venda")
 	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	void insert() {
-		Client client = new Client(null,"exemplo","exemplo","exemplo");
+		Client client = new Client(null,"exemplo","exemplo","exemplo", null);
 		clientService.insert(client);
 		LocalDateTime date =  LocalDateTime.now();
 		Sale venda = service.insert(new Sale(null,date,client));

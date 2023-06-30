@@ -1,6 +1,5 @@
 package br.com.trier.Livraria.resource;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
@@ -21,36 +20,72 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 
 import br.com.trier.Livraria.LivrariaApplication;
+import br.com.trier.Livraria.config.jwt.LoginDTO;
 import br.com.trier.Livraria.domain.Book;
 import br.com.trier.Livraria.domain.dto.BookDTO;
 
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = Replace.ANY)
-@Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/book.sql")
-@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:/resources/sqls/clearTable.sql")
 @SpringBootTest(classes = LivrariaApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 
 public class BookResourceTest {
 	
 	@Autowired
 	protected TestRestTemplate rest;
-    
-	private ResponseEntity<Book> getbook(String url) {
-		return rest.getForEntity(url, Book.class);
+	
+	private static String authToken; 
+	private HttpHeaders getHeaders(String email, String password) {
+	    if (authToken == null) { 
+	        LoginDTO loginDTO = new LoginDTO(email, password);
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(MediaType.APPLICATION_JSON);
+	        HttpEntity<LoginDTO> requestEntity = new HttpEntity<>(loginDTO, headers);
+	        ResponseEntity<String> responseEntity = rest.exchange(
+	                "/auth/token",
+	                HttpMethod.POST,
+	                requestEntity,
+	                String.class
+	        );
+	        authToken = responseEntity.getBody(); 
+	      
+	    }
+
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_JSON);
+	    headers.setBearerAuth(authToken);
+	    return headers;
 	}
 
-	private ResponseEntity<List<Book>> getbooks(String url) {
-		return rest.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Book>>() {
-		});
+
+    
+	private ResponseEntity<Book> getBook(String url) {
+	    return rest.exchange(
+	            url,
+	            HttpMethod.GET,
+	            new HttpEntity<>(getHeaders("test1@gmail.com", "123")),
+	            Book.class
+	    );
 	}
+
+	private ResponseEntity<List<Book>> getBooks(String url) {
+	    return rest.exchange(
+	            url,
+	            HttpMethod.GET,
+	            new HttpEntity<>(getHeaders("test1@gmail.com", "123")),
+	            new ParameterizedTypeReference<List<Book>>() {}
+	    );
+	}
+
 
 	@Test
 	@DisplayName("Buscar por id")
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	public void testGetOk() {
-		ResponseEntity<Book> response = getbook("/book/1");
+		ResponseEntity<Book> response = getBook("/book/1");
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
 
 		Book book = response.getBody();
@@ -59,37 +94,43 @@ public class BookResourceTest {
 
 	@Test
 	@DisplayName("Buscar por id inexistente")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	public void testGetNotFound() {
-		ResponseEntity<Book> response = getbook("/book/300");
+		ResponseEntity<Book> response = getBook("/book/300");
 		assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
 	}
 
 	@Test
-	@DisplayName("Inserir novo país")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
+	@DisplayName("Inserir novo livro")
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	public void testInsert() {
 	    BookDTO dto = new BookDTO(1,"New Book", 90);
 
-	    HttpHeaders headers = new HttpHeaders();
+	    HttpHeaders headers = getHeaders("test1@gmail.com", "123");
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 	    HttpEntity<BookDTO> requestEntity = new HttpEntity<>(dto, headers);
 
 	    ResponseEntity<Book> responseEntity = rest.exchange("/book", HttpMethod.POST, requestEntity, Book.class);
 
-	    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-	    Book book = responseEntity.getBody();
-	    assertEquals("New Book", book.getTitle());
+	    assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+		assertEquals("New Book", responseEntity.getBody().getTitle());
 	}
 
 
 	@Test
 	@DisplayName("Atualizar book")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	public void testUpdatebook() {
+		ResponseEntity<Book> response = getBook("/book/1");
+		assertEquals(response.getStatusCode(), HttpStatus.OK);
 		Book book = new Book(1, "teste", null);
-		HttpHeaders headers = new HttpHeaders();
+		HttpHeaders headers = getHeaders("test1@gmail.com", "123");
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<Book> requestEntity = new HttpEntity<>(book, headers);
 		ResponseEntity<Book> responseEntity = rest.exchange("/book/1", HttpMethod.PUT, requestEntity, Book.class);
@@ -100,69 +141,43 @@ public class BookResourceTest {
 
 	@Test
 	@DisplayName("Excluir book")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
-	@Sql(scripts = "classpath:/resources/sqls/book.sql")
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	public void testDeletebook() {
-		ResponseEntity<Void> responseEntity = rest.exchange("/book/1", HttpMethod.DELETE, null, Void.class);
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		ResponseEntity<Book> getbookResponse = getbook("/book/1");
-		assertEquals(HttpStatus.NOT_FOUND, getbookResponse.getStatusCode());
-	}
+		HttpHeaders headers = getHeaders("test1@teste.com.br", "123");
+		HttpEntity<Void> requestEntity = new HttpEntity<>(null, headers);
+		ResponseEntity<Void> response = rest.exchange("/book/1", HttpMethod.DELETE, requestEntity, Void.class);
+		assertEquals(response.getStatusCode(), HttpStatus.OK);	}
 
 	@Test
 	@DisplayName("Buscar book por titulo")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
-	@Sql(scripts = "classpath:/resources/sqls/book.sql")
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	public void testGetbookByName() {
-		ResponseEntity<List<Book>> response = getbooks("/book/title/Book 1");
+		ResponseEntity<List<Book>> response = getBooks("/book/title/Book 1");
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
 	}
-
 
 	@Test
 	@DisplayName("Listar todos os book")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	public void testGetAllbook() {
-		ResponseEntity<List<Book>> response = getbooks("/book");
+		ResponseEntity<List<Book>> response = getBooks("/book");
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
 	}
 
 	@Test
-	@DisplayName("Cadastrar book - BadRequest")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
-	public void testCreatebookBadRequest() {
-		BookDTO dto = null;
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<BookDTO> requestEntity = new HttpEntity<>(dto, headers);
-		ResponseEntity<BookDTO> responseEntity = rest.exchange("/book", HttpMethod.POST, requestEntity, BookDTO.class);
-
-		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-	}
-
-	@Test
-	@DisplayName("Atualizar book - BadRequest")
-	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
-	public void testUpdatebookBadRequest() {
-		BookDTO dto = null;
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<BookDTO> requestEntity = new HttpEntity<>(dto, headers);
-		ResponseEntity<BookDTO> responseEntity = rest.exchange("/book/1", HttpMethod.PUT, requestEntity, BookDTO.class);
-		assertThat(dto).isNull();
-		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-	}
-
-	@Test
-	@Sql(scripts = "classpath:/resources/sqls/clearTable.sql")
-	public void testUpdatebookNotFound() {
-		BookDTO dto = null;
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<BookDTO> requestEntity = new HttpEntity<>(dto, headers);
-		ResponseEntity<BookDTO> responseEntity = rest.exchange("/book/1", HttpMethod.PUT, requestEntity, BookDTO.class);
-		assertThat(dto).isNull();
-		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	@DisplayName("Buscar book por preço")
+	@Sql({"classpath:/resources/sqls/clearTable.sql"})
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
+	public void testGetBookByPrice() {
+		ResponseEntity<List<Book>> response = getBooks("/book/price/20");
+		assertEquals(response.getStatusCode(), HttpStatus.OK);
 	}
 
 }

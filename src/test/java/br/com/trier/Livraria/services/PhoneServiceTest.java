@@ -68,7 +68,7 @@ public class PhoneServiceTest extends BaseTest{
 	@DisplayName("Teste cadastrar phone")
 	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	void insert() {
-		Client client = new Client(null,"exemplo","exemplo","exemplo");
+		Client client = new Client(null,"exemplo","exemplo","exemplo", null);
 		clientService.insert(client);
 		Phone phone = service.insert(new Phone(null,"99999-9999",client));
 		assertThat(phone).isNotNull();
@@ -175,7 +175,7 @@ public class PhoneServiceTest extends BaseTest{
 	@Sql({ "classpath:/resources/sqls/clearTable.sql", "classpath:/resources/sqls/client.sql" })
 	void validateEmptyNumber() {
 	    var exception = assertThrows(IntegrityViolation.class, () -> {
-	        Client client = new Client(null, "", "test123@gmail.com", "123");
+	        Client client = new Client(null, "", "test123@gmail.com", "123", null);
 	        Phone phone = new Phone(null, "", client);
 	        service.insert(phone);
 	    });

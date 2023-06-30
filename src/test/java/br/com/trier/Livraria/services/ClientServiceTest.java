@@ -57,7 +57,7 @@ public class ClientServiceTest extends BaseTest{
 	@DisplayName("Teste cadastrar client")
 	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	void insert() {
-		Client client = clientService.insert(new Client(2, "test", "test123@gmail.com", "123"));
+		Client client = clientService.insert(new Client(2, "test", "test123@gmail.com", "123", "ADMIN"));
 		assertThat(client).isNotNull();
 		assertEquals(2, client.getId());
 		assertEquals("test", client.getName());
@@ -70,7 +70,7 @@ public class ClientServiceTest extends BaseTest{
 	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/client.sql"})
 	void insertExistente() {
-		var exception = assertThrows(IntegrityViolation.class, () -> clientService.insert(new Client(null, "test", "test1@gmail.com", "123")));
+		var exception = assertThrows(IntegrityViolation.class, () -> clientService.insert(new Client(null, "test", "test1@gmail.com", "123", "ADMIN")));
 		assertEquals("Email ja cadastrado: test1@gmail.com", exception.getMessage());
 	}
 	
@@ -79,7 +79,7 @@ public class ClientServiceTest extends BaseTest{
 	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/client.sql"})
 	void updateUser() {
-		Client client = clientService.update(new Client(2, "testee", "test123@gmail.com", "123"));
+		Client client = clientService.update(new Client(2, "testee", "test123@gmail.com", "123", "ADMIN"));
 		assertThat(client).isNotNull();
 		var clientTest = clientService.findById(2);
 		assertEquals(2, clientTest.getId());
@@ -93,7 +93,7 @@ public class ClientServiceTest extends BaseTest{
 	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/client.sql"})
 	void updateUserEmailExistente() {
-		var exception = assertThrows(IntegrityViolation.class, () -> clientService.update(new Client(2, "test", "test1@gmail.com", "123")));
+		var exception = assertThrows(IntegrityViolation.class, () -> clientService.update(new Client(2, "test", "test1@gmail.com", "123", "ADMIN")));
 		assertEquals("Email ja cadastrado: test1@gmail.com", exception.getMessage());
 	}
 	
@@ -177,7 +177,7 @@ public class ClientServiceTest extends BaseTest{
 	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/client.sql"})
 	void validateEmptyPassword() {
-		  var exception = assertThrows(IntegrityViolation.class, () -> clientService.insert(new Client(null, "test", "test123@gmail.com", "")));
+		  var exception = assertThrows(IntegrityViolation.class, () -> clientService.insert(new Client(null, "test", "test123@gmail.com", "", "ADMIN")));
 		    assertEquals("Senha não pode estar vazia.", exception.getMessage());	}
 
 	@Test
@@ -185,7 +185,7 @@ public class ClientServiceTest extends BaseTest{
 	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/client.sql"})
 	void validateEmptyName() {
-		   var exception = assertThrows(IntegrityViolation.class, () -> clientService.insert(new Client(null, "", "test123@gmail.com", "123")));
+		   var exception = assertThrows(IntegrityViolation.class, () -> clientService.insert(new Client(null, "", "test123@gmail.com", "123", "ADMIN")));
 		    assertEquals("Nome não pode estar vazio.", exception.getMessage());	
 		    }
 
@@ -194,7 +194,7 @@ public class ClientServiceTest extends BaseTest{
 	@Sql({"classpath:/resources/sqls/clearTable.sql"})
 	@Sql({"classpath:/resources/sqls/client.sql"})
 	void validateEmptyEmail() {
-		 var exception = assertThrows(IntegrityViolation.class, () -> clientService.insert(new Client(null, "test", "", "123")));
+		 var exception = assertThrows(IntegrityViolation.class, () -> clientService.insert(new Client(null, "test", "", "123", "ADMIN")));
 		    assertEquals("Email não pode ser vazio.", exception.getMessage());	}
 
 
