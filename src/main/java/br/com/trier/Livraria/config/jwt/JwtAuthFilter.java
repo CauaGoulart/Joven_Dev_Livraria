@@ -1,4 +1,4 @@
-package br.com.trier.projeto_pessoal_spring.config.jwt;
+package br.com.trier.Livraria.config.jwt;
 
 import java.io.IOException;
 
@@ -33,6 +33,10 @@ public class JwtAuthFilter extends OncePerRequestFilter{
 	            token = authHeader.substring(7);
 	            username = jwtUtil.extractUsername(token);
 	        }
+	        
+	        System.out.println("Token: " + token);
+	        System.out.println("Username: " + username);
+
 
 	        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 	            UserDetails userDetails = service.loadUserByUsername(username);

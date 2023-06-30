@@ -1,4 +1,4 @@
-package br.com.trier.projeto_pessoal_spring.config.jwt;
+package br.com.trier.Livraria.config.jwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -8,22 +8,23 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import br.com.trier.projeto_pessoal_spring.repositories.UserRepository;
+import br.com.trier.Livraria.domain.Client;
+import br.com.trier.Livraria.repositories.ClientRepository;
 
 @Component
 public class JwtUserDetailService implements UserDetailsService{
 	
 	@Autowired
-	private UserRepository repository;
+	private ClientRepository repository;
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		br.com.trier.projeto_pessoal_spring.domain.User user = repository.findByEmail(email).orElseThrow(null);
+		Client client = repository.findByEmail(email).orElseThrow(null);
 		return User.builder()
-				.username(user.getEmail())
-				.password(encoder.encode(user.getPassword()))
-				.roles(user.getRoles().split(","))
+				.username(client.getEmail())
+				.password(encoder.encode(client.getPassword()))
+				.roles(client.getRoles().split(","))
 				.build();
 	}
 }

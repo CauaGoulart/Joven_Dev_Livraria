@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,18 +32,21 @@ public class SaleResource {
 	@Autowired
 	private ClientService clientService;
 	
+	@Secured({"ROLE_ADMIN"})
 	@PostMapping
 	public ResponseEntity<SaleDTO> insert(@RequestBody SaleDTO sale) {
 		Sale newSale = service.insert(new Sale(sale));
 		return ResponseEntity.ok(newSale.toDto());
 	}
 
+	@Secured({"ROLE_USER"})
 	@GetMapping("/{id}")
 	public ResponseEntity<SaleDTO> findById(@PathVariable Integer id) {
 		Sale sale = service.findById(id);
         return ResponseEntity.ok(sale.toDto());		
         }
     
+	@Secured({"ROLE_ADMIN"})
     @PutMapping("/{id}")
 	public ResponseEntity<SaleDTO> update(@PathVariable Integer id, @RequestBody SaleDTO saleDTO) {
     	Sale sale = new Sale(saleDTO);
@@ -51,23 +55,27 @@ public class SaleResource {
 		return ResponseEntity.ok(sale.toDto());
 	}
     
+	@Secured({"ROLE_ADMIN"})
     @DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
     	service.delete(id);
     	return ResponseEntity.ok().build();
 	}
     
+	@Secured({"ROLE_USER"})
     @GetMapping
 	public ResponseEntity<List<SaleDTO>> listAll(){
         return ResponseEntity.ok(service.listAll().stream().map((sale) -> sale.toDto()).toList());
     }
     
+	@Secured({"ROLE_USER"})
     @GetMapping("/user/{idClient}")
    	public ResponseEntity<List<SaleDTO>> findByClient(@PathVariable Integer idClient){
     	return ResponseEntity.ok(service.findByClient(clientService.findById(idClient)).stream().map((sale) -> sale.toDto()).toList());
            
     }
     
+	@Secured({"ROLE_USER"})
     @GetMapping("/date/{date}")
     public ResponseEntity<List<SaleDTO>> findByDate(@PathVariable("date") String dateStr) {
         LocalDateTime date = DateUtils.strToLocalDateTime(dateStr);

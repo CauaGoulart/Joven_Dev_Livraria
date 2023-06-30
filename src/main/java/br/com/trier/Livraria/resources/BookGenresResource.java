@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,18 +33,21 @@ public class BookGenresResource {
 	@Autowired
 	private GenresService genresService;
 	
+	@Secured({"ROLE_ADMIN"})
 	@PostMapping
 	public ResponseEntity<BookGenresDTO> insert(@RequestBody BookGenresDTO bookGenres) {
 		BookGenres newBookGenres = service.insert(new BookGenres(bookGenres));
 		return ResponseEntity.ok(newBookGenres.toDto());
 	}
 
+	@Secured({"ROLE_USER"})
 	@GetMapping("/{id}")
 	public ResponseEntity<BookGenresDTO> findById(@PathVariable Integer id) {
 		BookGenres bookGenres = service.findById(id);
         return ResponseEntity.ok(bookGenres.toDto());		
         }
     
+	@Secured({"ROLE_ADMIN"})
     @PutMapping("/{id}")
 	public ResponseEntity<BookGenresDTO> update(@PathVariable Integer id, @RequestBody BookGenresDTO bookGenresDTO) {
     	BookGenres bookGenres = new BookGenres(bookGenresDTO);
@@ -52,29 +56,34 @@ public class BookGenresResource {
 		return ResponseEntity.ok(bookGenres.toDto());
 	}
     
+	@Secured({"ROLE_ADMIN"})
     @DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
     	service.delete(id);
     	return ResponseEntity.ok().build();
 	}
     
+	@Secured({"ROLE_USER"})
     @GetMapping
 	public ResponseEntity<List<BookGenresDTO>> listAll(){
         return ResponseEntity.ok(service.listAll().stream().map((bookGenres) -> bookGenres.toDto()).toList());
     }
     
+	@Secured({"ROLE_USER"})
     @GetMapping("/book/{idBook}")
    	public ResponseEntity<List<BookGenresDTO>> findByBook(@PathVariable Integer idBook){
     	return ResponseEntity.ok(service.findByBook(bookService.findById(idBook)).stream().map((bookGenres) -> bookGenres.toDto()).toList());
            
     }
     
+	@Secured({"ROLE_USER"})
     @GetMapping("/author/{idGenres}")
    	public ResponseEntity<List<BookGenresDTO>> findByGenres(@PathVariable Integer idGenres){
     	return ResponseEntity.ok(service.findByGenres(genresService.findById(idGenres)).stream().map((bookGenres) -> bookGenres.toDto()).toList());
            
     }
     
+	@Secured({"ROLE_USER"})
     @GetMapping("/book-author/{idBook}/{idGenres}")
     public ResponseEntity<List<BookGenresDTO>> findByGenresAndBook(@PathVariable Integer idBook, @PathVariable Integer idGenres) {
         return ResponseEntity.ok(service.findByGenresAndBook(genresService.findById(idGenres), bookService.findById(idBook)).stream().map(BookGenres::toDto).toList());

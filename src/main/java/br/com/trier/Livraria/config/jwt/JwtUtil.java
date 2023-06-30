@@ -1,4 +1,4 @@
-package br.com.trier.projeto_pessoal_spring.config.jwt;
+package br.com.trier.Livraria.config.jwt;
 
 import java.security.Key;
 import java.util.Date;

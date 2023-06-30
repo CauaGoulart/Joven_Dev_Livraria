@@ -1,4 +1,4 @@
-package br.com.trier.projeto_pessoal_spring.config.jwt;
+package br.com.trier.Livraria.config.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

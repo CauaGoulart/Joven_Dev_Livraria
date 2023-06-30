@@ -1,4 +1,4 @@
-package br.com.trier.projeto_pessoal_spring.resources;
+package br.com.trier.Livraria.resources;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.trier.projeto_pessoal_spring.config.jwt.JwtUtil;
-import br.com.trier.projeto_pessoal_spring.config.jwt.LoginDTO;
+import br.com.trier.Livraria.config.jwt.JwtUtil;
+import br.com.trier.Livraria.config.jwt.LoginDTO;
+
+
 
 
 @RestController

@@ -36,12 +36,15 @@ public class Client {
 	@Column(name = "password_client")
 	private String password;
 	
+	@Column(name = "roles_client")
+	private String roles;
+	
 	public Client(ClientDTO dto) {
-		this(dto.getId(),dto.getName(),dto.getEmail(),dto.getPassword());
+		this(dto.getId(),dto.getName(),dto.getEmail(),dto.getPassword(),dto.getRoles());
 	}
 	
 	public ClientDTO toDto() {
-		return new ClientDTO(id,name,email,password);
+		return new ClientDTO(id,name,email,password,roles);
 	}
 
 }
