@@ -1,1 +1,0 @@
-delete from genres where id_genres > 0;
